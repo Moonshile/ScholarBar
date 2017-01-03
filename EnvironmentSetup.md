@@ -4,7 +4,14 @@
 
 1. Setup python. For Windows, python27 is required, because *twisted* doesn't support python3 in Windows.
 2. Setup virtualenv: `pip install virtualenv`
-3. Setup venv: cd into the ScholarBar repo folder, run `virtualenv venv & venv/Scripts/activate`
+3. Setup venv: cd into the ScholarBar repo folder first
+    
+    In Ubuntu, run
+    
+    ```bash
+    virtualenv venv
+    source venv/bin/activate
+    ````
 
     In Windows, if you use multiple versions of python, you should run
     ```bash
