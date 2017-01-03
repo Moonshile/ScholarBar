@@ -5,9 +5,9 @@
 1. Setup python. For Windows, python27 is required, because *twisted* doesn't support python3 in Windows.
 2. Setup virtualenv: `pip install virtualenv`
 3. Setup venv: cd into the ScholarBar repo folder first
-    
+
     In Ubuntu, run
-    
+
     ```bash
     virtualenv venv
     source venv/bin/activate
@@ -24,7 +24,10 @@
 Do as Common Steps first.
 
 ### For Ubuntu
-`pip install scrapy`
+```bash
+sudo apt-get install openssl libssl-dev
+pip install scrapy
+````
 
 ### For Windows
 
