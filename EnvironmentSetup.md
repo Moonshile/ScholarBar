@@ -6,14 +6,20 @@
 2. Setup virtualenv: `pip install virtualenv`
 3. Setup venv: cd into the ScholarBar repo folder, run `virtualenv venv & venv/Scripts/activate`
 
+    If you use multiple versions of python, you should run
+    ```bash
+    virtualenv -p <python27 executable path> venv # example: virtualenv -p C:/Python27/python.exe venv
+    venv/Scripts/activate
+    ```
+
 ## Setup scrapy
+
+Do as Common Steps first.
 
 ### For Ubuntu
 `pip install scrapy`
 
 ### For Windows
-
-Do as Common Steps first.
 
 1. Install [Microsoft Visual C++ Build Tools](https://www.microsoft.com/en-us/download/details.aspx?id=48159)
 2. Install [Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/details.aspx?id=44266)
