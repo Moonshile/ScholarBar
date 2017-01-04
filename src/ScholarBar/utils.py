@@ -82,14 +82,14 @@ if __name__ == '__main__':
     "a": 1,
     "b": [1,2,3,4,5],
     "c": {"a":"hello", "e": 2},
-    "f": [{"e": 100, "b": true}, {"a": 200}]
+    "f": [{"e": 100, "b": true}, {"a": { "inner": {"data": 200}}}]
 }
 '''
     navigator = JsonSelectorNavigator(test_json_str)
     assert navigator.search_all('aa') == []
-    assert navigator.search_all('a') == [1, 'hello', 200]
+    assert navigator.search_all('a') == [1, 'hello', { "inner": {"data": 200}}]
     assert navigator.search_all('b[3]') == [4]
     assert navigator.search_all('e') == [2, 100]
     assert navigator.search_all('c e') == [2]
-    assert navigator.search_all('f[1] > a') == [200]
+    assert navigator.search_all('f[1] > a data') == [200]
 
