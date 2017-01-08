@@ -37,3 +37,9 @@ pip install scrapy
 4. Install scrapy: `pip install scrapy`
 5. Install win32api: unzip and copy `src/contrib/site-packages/*` into `venv/Lib/site-packages/`
 
+## Run Spider
+
+```bash
+scrapy crawl ieee -o ieee.csv
+scrapy crawl bing -o bing.csv
+```

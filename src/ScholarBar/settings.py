@@ -9,6 +9,75 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+####################### ScholarBar Settings #############################
+
+import re
+from scrapy.http import Request
+
+from ScholarBar.utils import html_text
+
+KEYWORDS = ['audio generation']
+
+MAX_CRAWL_COUNT_EACH_SPIDER = 6
+
+CRAWLERS = {
+    # json response example
+    'ieee': {
+        'response_type': 'json',
+        'page_size': 10,
+        'start_page_index': 1,
+        'request_generator': lambda keyword, page_size, page_index: Request(
+            url = 'http://ieeexplore.ieee.org/rest/search',
+            method = 'POST',
+            headers = {'Content-Type': 'application/json'},
+            body = '{{"queryText": "{0}", "newsearch":"true", "rowsPerPage":"{1}", "pageNumber":"{2}"}}'.format(keyword, page_size, page_index)
+        ),
+        'scholar_item': {
+            'selector': '.records > div',
+            'title': '.title',
+            'year': '.publicationYear',
+            'publisher': '.publisher',
+            'authors': '.authors > div > .preferredName',
+            'affiliation': None,
+            'citation_count': '.citationCount',
+            'link': '.documentLink',
+            'download_link': '.pdfLink',
+        }
+    },
+
+    # html response example
+    'bing': {
+        'response_type': 'html',
+        'page_size': 10,
+        'start_page_index': 0,
+        'request_generator': lambda keyword, page_size, page_index: Request(
+            url = 'http://cn.bing.com/academic/search?q={0}&first={1}'.format(re.sub(r'\s+', '+', keyword), page_size*page_index + 1)
+        ),
+        'scholar_item': {
+            'selector': '#b_results > li.aca_algo',
+            'title': 'h2',
+            'year': {
+                'selector': '.caption_venue',
+                'post_convertor': lambda x: re.findall(r'\d{4}', html_text(x))[0],
+            },
+            'publisher': '.caption_venue > a:nth-of-type(1)',
+            'authors': {
+                'selector': '.caption_author',
+                'post_convertor': lambda s: list(map(lambda x: x.strip(), html_text(s).split(u'\xb7')))
+            },
+            'affiliation': None,
+            'citation_count': '.caption_venue > a:nth-of-type(2)',
+            'link': {
+                'selector': 'h2/a/@href',
+                'is_css': False,
+            },
+            'download_link': None,
+        }
+    }
+}
+
+####################### System Settings #############################
+
 BOT_NAME = 'ScholarBar'
 
 SPIDER_MODULES = ['ScholarBar.spiders']
@@ -19,7 +88,7 @@ NEWSPIDER_MODULE = 'ScholarBar.spiders'
 #USER_AGENT = 'ScholarBar (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
